@@ -11,6 +11,7 @@ import com.assessment.pricecalculator.dto.ProductPrice;
 import com.assessment.pricecalculator.dto.ProductPriceBreakdown;
 import com.assessment.pricecalculator.dto.QuantityPrice;
 import com.assessment.pricecalculator.exceptions.PriceCalculatorException;
+import com.assessment.pricecalculator.utils.ProductOrderType;
 
 @Service
 public class ProductPriceServiceImpl implements ProductPriceService {
@@ -33,7 +34,7 @@ public class ProductPriceServiceImpl implements ProductPriceService {
 			Product product = productService.getProduct(id);
 			double totalPrice;
 
-			if (type.equals("units")) {
+			if (type.equalsIgnoreCase(ProductOrderType.UNITS.getTObject())) {
 
 				int noOfCartons = orderQty / product.getUnitsPerCarton();
 				double cartonsPrice = calculateCartonsPrice(product, noOfCartons);
@@ -49,7 +50,7 @@ public class ProductPriceServiceImpl implements ProductPriceService {
 			totalPrice = Math.round(totalPrice * 100.0) / 100.0;
 			quantityPrice.setOrderQty(orderQty);
 			quantityPrice.setCalculatedPrice(totalPrice);
-			
+
 			productPrice.setProduct(product);
 			productPrice.setOrderType(type);
 			productPrice.setQuantityPrice(quantityPrice);
@@ -75,7 +76,7 @@ public class ProductPriceServiceImpl implements ProductPriceService {
 			IntStream.rangeClosed(1, orderQty).forEach(qty -> {
 
 				QuantityPrice quantityPrice = new QuantityPrice();
-				
+
 				int noOfCartons = qty / product.getUnitsPerCarton();
 				double cartonsPrice = calculateCartonsPrice(product, noOfCartons);
 
@@ -83,13 +84,13 @@ public class ProductPriceServiceImpl implements ProductPriceService {
 
 				double totalPrice = cartonsPrice + singleUnitsPrice;
 				totalPrice = Math.round(totalPrice * 100.0) / 100.0;
-				
+
 				quantityPrice.setOrderQty(qty);
 				quantityPrice.setCalculatedPrice(totalPrice);
-				
+
 				quantityPriceList.add(quantityPrice);
 			});
-			
+
 			productPriceBreakdown.setQuantityPrice(quantityPriceList);
 		} catch (Exception e) {
 
