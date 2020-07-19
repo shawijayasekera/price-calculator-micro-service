@@ -111,7 +111,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 			serviceException.setMessageId(ServiceErrorType.SVC_0002.getErrorCode());
 			serviceException.setText(ServiceErrorType.SVC_0002.getErrorMessage());
 			serviceException
-					.setVariables(errorFieldDecimalMinCommaSeparated + " should be equal or greater than 0.01 ");
+					.setVariables(errorFieldDecimalMinCommaSeparated);
 		} else if (errorMap.containsKey(ValidationType.MIN.getTObject())) {
 
 			Collection<ErrorDTO> minErrorDTOCollection = errorMap.get(ValidationType.MIN.getTObject());
@@ -127,7 +127,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
 			serviceException.setMessageId(ServiceErrorType.SVC_0002.getErrorCode());
 			serviceException.setText(ServiceErrorType.SVC_0002.getErrorMessage());
-			serviceException.setVariables(errorFieldMinCommaSeparated + " equal or greater than 1 ");
+			serviceException.setVariables(errorFieldMinCommaSeparated);
 		} else if (errorMap.containsKey(ValidationType.ORDER_TYPE.getTObject())) {
 
 			Collection<ErrorDTO> orderTypeErrorDTOCollection = errorMap.get(ValidationType.ORDER_TYPE.getTObject());
@@ -145,7 +145,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
 			serviceException.setMessageId(ServiceErrorType.SVC_0002.getErrorCode());
 			serviceException.setText(ServiceErrorType.SVC_0002.getErrorMessage());
-			serviceException.setVariables("Invalid orderType : " + orderTypeCommaSeparated);
+			serviceException.setVariables(orderTypeCommaSeparated);
 		}
 
 		requestError.setServiceException(serviceException);
