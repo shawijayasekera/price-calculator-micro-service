@@ -25,7 +25,7 @@ public class PriceCalculatorApplication {
 	@Bean
 	public Docket swagerConfiguration() {
 
-		return new Docket(DocumentationType.SWAGGER_2).select().paths(PathSelectors.ant("/price-calculator/**"))
+		return new Docket(DocumentationType.SWAGGER_2).select().paths(PathSelectors.ant("/**"))
 				.apis(RequestHandlerSelectors.basePackage("com.assessment.pricecalculator")).build()
 				.apiInfo(apiDetails());
 	}
