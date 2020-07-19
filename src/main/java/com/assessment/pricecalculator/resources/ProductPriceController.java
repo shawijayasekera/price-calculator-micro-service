@@ -35,7 +35,7 @@ public class ProductPriceController {
 	@ApiOperation(value = "Retrieve calculated product price", notes = "Retrieve calculated product price according to the given quantity and type")
 	public ResponseEntity<ProductPrice> getCalculatedProductPrice(@PathVariable @Min(value = 1) Integer id,
 			@RequestParam @NotNull(message = "qty") @Min(value = 1) Integer qty,
-			@RequestParam @NotBlank(message = "orderType") @OrderType String orderType)
+			@RequestParam @NotBlank(message = "orderType") @OrderType(message = "orderType") String orderType)
 			throws PriceCalculatorException {
 
 		ProductPrice productPrice = productPriceService.getCalculatedProductPrice(id, qty, orderType);
