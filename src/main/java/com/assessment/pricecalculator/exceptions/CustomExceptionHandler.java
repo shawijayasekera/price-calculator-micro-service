@@ -24,10 +24,12 @@ import com.google.common.collect.Multimap;
 @ControllerAdvice
 public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
+	private static final String SEPARATOR = ",";
+	
 	@Override
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
-
+		
 		/* construct exception message object */
 		CommonErrorMessage commonErrorMessage = new CommonErrorMessage();
 		RequestError requestError = new RequestError();
@@ -73,7 +75,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 				missingParameterList.add(errorDTO.getErrorField());
 			}
 
-			String errorFieldCommaSeparated = String.join(",", missingParameterList);
+			String errorFieldCommaSeparated = getSeparatedMissingParameterList(missingParameterList);
 
 			serviceException = new ServiceException();
 
@@ -104,7 +106,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 				decimalMinErrorFieldList.add(errorDTO.getErrorField());
 			}
 
-			String errorFieldDecimalMinCommaSeparated = String.join(",", decimalMinErrorFieldList);
+			String errorFieldDecimalMinCommaSeparated = getSeparatedMissingParameterList(decimalMinErrorFieldList);
 
 			serviceException = new ServiceException();
 
@@ -121,7 +123,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 				minErrorFieldList.add(errorDTO.getErrorField());
 			}
 
-			String errorFieldMinCommaSeparated = String.join(",", minErrorFieldList);
+			String errorFieldMinCommaSeparated = getSeparatedMissingParameterList(minErrorFieldList);
 
 			serviceException = new ServiceException();
 
@@ -139,7 +141,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 				orderTypeRejectedValueList.add(errorDTO.getRejectedValue());
 			}
 
-			String orderTypeCommaSeparated = String.join(",", orderTypeRejectedValueList);
+			String orderTypeCommaSeparated = getSeparatedMissingParameterList(orderTypeRejectedValueList);
 
 			serviceException = new ServiceException();
 
@@ -152,6 +154,16 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 		commonErrorMessage.setRequestError(requestError);
 
 		return new ResponseEntity<>(commonErrorMessage, headers, status);
+	}
+	
+	private String getSeparatedMissingParameterList(List<String> missingParameterList) {
+		
+		StringBuilder stringBuilder = new StringBuilder();
+		missingParameterList.stream().forEach(parameter -> {
+			stringBuilder.append(parameter).append(SEPARATOR);
+		});
+		
+		return stringBuilder.toString();
 	}
 
 	@ExceptionHandler(ProductNotFoundException.class)
